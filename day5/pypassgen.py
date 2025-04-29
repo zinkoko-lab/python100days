@@ -22,4 +22,4 @@ for _ in range(num_symbols):
 
 random.shuffle(password)
 password = "".join(password)
-print(password)
+print(f"Your password is: {password}")
