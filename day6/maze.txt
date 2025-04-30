@@ -1,0 +1,22 @@
+def turn_right():
+    turn_left()
+    turn_left()
+    turn_left()
+    
+def turn_around():
+    turn_left()
+    turn_left()
+
+while not at_goal():
+    a = front_is_clear()
+    b = right_is_clear()
+    if a and b:
+        turn_right()
+        move()
+    elif b and not a:
+        turn_right()
+        move()
+    elif a and not b:
+        move()
+    else:
+        turn_left()
