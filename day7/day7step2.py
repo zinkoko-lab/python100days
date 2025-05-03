@@ -88,11 +88,11 @@ def life_count(num_life):
         print(life_arts[num_life])
         print(f"****************************{num_life}/6 LIVES LEFT****************************")
 
-word_list = ["aardvark", "baboon", "camel"]
-chosen_word = random.choice(word_list)
+word_list = ["aardvark", "baboon", "camel"]     # 単語のリストの定義
+chosen_word = random.choice(word_list)          # 単語のリストからある単語をランダムに取り出して、chosen_wordに代入
 
-placeholder = '_'*len(chosen_word)
-placeholderLst = list(placeholder)
+placeholder = '_'*len(chosen_word)              # chosen_word で定義された単語と同じ文字数で　'_' で文字列を作り placeholder に代入する
+placeholderLst = list(placeholder)              # placeholder の文字を list に変換し placeholderLst に代入する
 life = 6
 guessed_Lst = []
 
@@ -126,4 +126,3 @@ if life == 0:
     print(f"***********************IT WAS {chosen_word}! YOU LOSE**********************")
 else:
     print(f"***************YOU CAN GUESS THE WORD {chosen_word}! YOU WIN***************")
-
