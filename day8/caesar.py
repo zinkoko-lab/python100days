@@ -20,7 +20,7 @@ a8"     "" 88 88P'    "8a 88P'    "8a a8P_____88 88P'   "Y8
 
 print(art)
 
-def encode(plain_text: str, key: int):
+def encrypt(plain_text: str, key: int):
     """
         テキストをシーザー暗号でエンコードする。
 
@@ -46,7 +46,7 @@ def encode(plain_text: str, key: int):
 
     return encoded_text
 
-def decode(encoded_text: str, key: int):
+def decrypt(encoded_text: str, key: int):
     """
         シーザー暗号をデコードする。
 
@@ -89,9 +89,9 @@ while True:
 
     # 選択に応じてエンコードまたはデコードを実行
     if direction == 'encode':
-        print(encode(text, shift))
+        print(encrypt(text, shift))
     elif direction == "decode":
-        print(decode(text, shift))
+        print(decrypt(text, shift))
 
     # もう一度実行するか尋ねる
     again = input("Type 'yes' if you want to go again. Otherwise type 'no'.\n")
