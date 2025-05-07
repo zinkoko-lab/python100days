@@ -67,3 +67,5 @@ while again == 'yes':
         pass
 
     again = input("Type 'yes' if you want to go again. Otherwise type 'no'.\n")
+
+print("Goodbye")
