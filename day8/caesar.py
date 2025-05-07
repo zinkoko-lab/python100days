@@ -90,10 +90,11 @@ while True:
     # 選択に応じてエンコードまたはデコードを実行
     if direction == 'encode':
         result = encrypt(text, shift)
-        print(f"Here's the encoded result: {result}")
     elif direction == "decode":
         result = decrypt(text, shift)
-        print(f"Here's the decoded result: {result}")
+
+    # 結果を表示する
+    print(f"Here's the {direction}d result: {result}")
 
     # もう一度実行するか尋ねる
     again = input("Type 'yes' if you want to go again. Otherwise type 'no'.\n")
