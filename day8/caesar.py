@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 art = r'''
         
  ,adPPYba, ,adPPYYba,  ,adPPYba, ,adPPYba, ,adPPYYba, 8b,dPPYba,  
