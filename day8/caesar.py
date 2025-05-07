@@ -21,19 +21,42 @@ a8"     "" 88 88P'    "8a 88P'    "8a a8P_____88 88P'   "Y8
 print(art)
 
 def encode(plain_text: str, key: int):
+    """
+        テキストをシーザー暗号でエンコードする。
+
+        Args:
+            plain_text (str): エンコード対象の文字列
+            key (int): シフトする文字数
+
+        Returns:
+            str: エンコードされた文字列
+    """
     encoded_text = ''
     for letter in plain_text:
-        if letter.isalpha():
+        if letter.isalpha():    # アルファベットの場合のみデコード処理を行う
+            # 大文字の場合
             if letter.isupper():
-                encoded_text += chr(ord('A') + (ord(letter) - ord('A') + key) % 26)
+                encoded_text += chr(ord('A') + (ord(letter) - ord('A') + key) % 26)     # シフト後の文字を計算
+            # 小文字の場合
             else:
                 encoded_text += chr(ord('a') + (ord(letter) - ord('a') + key) % 26)
+        # アルファベット以外はそのまま追加
         else:
             encoded_text += letter
 
     return encoded_text
 
 def decode(encoded_text: str, key: int):
+    """
+        シーザー暗号をデコードする。
+
+        Args:
+            encoded_text (str): デコード対象の文字列
+            key (int): シフトする文字数
+
+        Returns:
+            str: デコードされた文字列
+    """
     decoded_text = ''
     for letter in encoded_text:
         if letter.isalpha():
@@ -46,26 +69,32 @@ def decode(encoded_text: str, key: int):
 
     return decoded_text
 
-again = 'yes'
 
-while again == 'yes':
+# メインループ
+while True:
+    # テキストを暗号化する復号化するかユーザーに選択させる
+    direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n").lower()
+    if direction not in ['encode', 'decode']:
+        print("Invalid option. Please type 'encode' or 'decode'.")
+        continue
 
-    flag = False
-    while not flag:
-        direction = input("Type 'encode' to encrypt, type 'decode' to decrypt:\n")
-        if direction == 'encode' or direction == 'decode':
-            flag = True
-
+    # ユーザーに暗号化してほしいまたは復号化してほしいテキストを入力させる
     text = input("Type your message:\n")
-    shift = int(input("Type the shift number:\n"))
 
+    try:
+        shift = int(input("Type the shift number:\n")) % 26
+    except ValueError:
+        print("Shift must be an integer.")
+        continue
+
+    # 選択に応じてエンコードまたはデコードを実行
     if direction == 'encode':
         print(encode(text, shift))
     elif direction == "decode":
         print(decode(text, shift))
-    else:
-        pass
 
+    # もう一度実行するか尋ねる
     again = input("Type 'yes' if you want to go again. Otherwise type 'no'.\n")
-
-print("Goodbye")
+    if again != 'yes':
+        print("Goodbye")
+        break
