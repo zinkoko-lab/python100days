@@ -37,6 +37,7 @@ bidders = {}
 
 # 入札ループ（複数のユーザーから情報を集める）
 while True:
+    clear_screen()  # 画面をクリアして入力を開始
     print(logo)  # ロゴを毎回表示（新しいユーザーの開始時）
 
     # 入札者の名前を取得
@@ -60,8 +61,7 @@ while True:
     if any_other_bidders != "yes":
         break  # もういない場合、ループ終了
     else:
-        clear_screen()  # 画面をクリアして次の人の入力を開始
-
+        continue
 
 # 最後にもう一度画面をクリアして、勝者を発表する準備
 clear_screen()
