@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 
 # ターミナルの画面をクリアする関数を定義
@@ -74,4 +76,4 @@ for key in bidders:
 
 # 勝者を表示
 print(f"The winner is {winner} with a bid of ${max_bid}.")
-print("\n"*5)  # 少しスペースをあけて終了
+print("\n"*3)  # 少しスペースをあけて終了
