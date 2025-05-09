@@ -40,8 +40,13 @@ while True:
     clear_screen()  # 画面をクリアして入力を開始
     print(logo)  # ロゴを毎回表示（新しいユーザーの開始時）
 
-    # 入札者の名前を取得
-    name = input("What's your name?: ")
+    # 入札者の名前を取得（バリデーション付き）
+    while True:
+        name = input("What's your name?: ").strip()
+        if name == "":
+            print("Name cannot be empty. Please enter your name.")
+            continue
+        break
 
     # 入札金額を整数として取得（バリデーション付き）
     while True:
