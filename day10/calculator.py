@@ -83,10 +83,13 @@ while start_new_calculation:
         what_next = input(f"Type 'y' to continue calculating with {result}, or type 'n' to start a new calculation: ")
         if what_next == 'y':
             first_number = result
+            clear_screen()
         elif what_next == 'n':
             use_last_result = False
+            clear_screen()
         else:
             use_last_result = False
             start_new_calculation = False
 
-print("Goodbye!")
+clear_screen()
+print("Goodbye from Calculator!")
