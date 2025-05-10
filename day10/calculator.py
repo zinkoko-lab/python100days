@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
+import os
 import logo
+
+# ターミナルの画面をクリアする関数を定義
+# os.name が 'nt' の場合は Windows ⇒ 'cls' コマンド
+# それ以外（macOS / Linux）の場合は 'clear' コマンドを使用
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+clear_screen()
 print(logo.logo)
 
 def number_input(what_number: int):
@@ -27,19 +36,17 @@ def multiply(num1: int, num2: int):
 def divide(num1: int, num2: int):
     return num1 / num2
 
+operations_dict = {
+    "+": add,
+    "-": subtract,
+    "*": multiply,
+    "/": divide
+}
+
 def operate(num1: int, num2: int, operation: str):
     # 演算種別に応じて処理を実行
     try:
-        if operation == "+":
-            return add(num1, num2)
-        elif operation == "-":
-            return subtract(num1, num2)
-        elif operation == "*":
-            return multiply(num1, num2)
-        elif operation == "/":
-            return divide(num1, num2)
-        else:
-            return
+        return operations_dict[operation](num1, num2)
     # 0除算やオーバーフロー、その他の予期せぬエラーを処理
     except ZeroDivisionError:
         print("Division by zero detected. The result is considered infinity.")
