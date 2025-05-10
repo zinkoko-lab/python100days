@@ -84,6 +84,7 @@ while start_new_calculation:
         if what_next == 'y':
             first_number = result
             clear_screen()
+            print(f"Previous result is {first_number}.")
         elif what_next == 'n':
             use_last_result = False
             clear_screen()
