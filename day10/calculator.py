@@ -17,7 +17,7 @@ def number_input(what_number: int):
     """
     while True:
         try:
-            number = int(input(f"What is the {what_number} number?: "))
+            number = float(input(f"What is the {what_number} number?: "))
             break
         except ValueError:
             print("Your number is invalid. Please try again. ")
