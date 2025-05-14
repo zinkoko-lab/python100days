@@ -9,7 +9,26 @@ while True:
         break
     else:
         # hand out each two cards for each(player & computetr)
+        hands = {"player":[], "computer":[]}
+        for _ in range(2):
+            hands["player"].append(random.choice(cards))
+            hands["computer"].append(random.choice(cards))
+
+        # write a function to calculate the score
+
+        # ACE 1 card:
+        # if hands have one ACE card and sum of another cards < 11 : ace = 11
+        # if hands have one ACE card and sum of another cards => 11 : ace = 1
+
+        # ACE 2 cards:
+        # if hands have two cards and sum of another cards < 10 : ace = 11, ace = 1
+        # if hands have two cards and sum of another cards >= 10 : ace = 1, 1
+
+        # ACE N cards and more:
+        # if hands h
+
         # show all the player's cards and score
+
         # show the first card of computer.
 
         # If one or both has score of 21, it possible 3 cases.
@@ -28,8 +47,6 @@ while True:
         # if user score = 21(not natural blackjack)
         #   if user score > computer score:
         #       user win with blackjack
-        #   if user score = computer score:
-        #       draw
 
         # else(user stopped hit and user score < 21)
 
@@ -38,4 +55,8 @@ while True:
         # If computer_score <= 16: hit the cards
         # If computer_score >= 17: stand
 
-        # 
+        # If computer_score > player_score:
+        #   computer win
+        # If computer_score < player_score:
+        #   user win
+        # else: draw
