@@ -16,6 +16,12 @@ while True:
 
         # write a function to calculate the score
 
+        # if hands contain any ACE(11):
+        # 1 -> 11 = 12 - 1
+        # 2 -> 10 = 12 - 2
+        # 3 -> 9 = 12 - 3
+        # N -> 12 - N
+
         # ACE 1 card:
         # if hands have one ACE card and sum of another cards < 11 : ace = 11
         # if hands have one ACE card and sum of another cards => 11 : ace = 1
@@ -25,7 +31,8 @@ while True:
         # if hands have two cards and sum of another cards >= 10 : ace = 1, 1
 
         # ACE N cards and more:
-        # if hands h
+        # if hands have N cards and sum of another cards < (12 - N) : ace = 11, ace = 1
+        # if hands have N cards and sum of another cards >= (12 - N) : ace = 1, 1
 
         # show all the player's cards and score
 
