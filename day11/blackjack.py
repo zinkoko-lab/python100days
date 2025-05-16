@@ -159,7 +159,7 @@ while True:
             declare_winner_under_magic_conditions()
             continue
 
-        # Ask user to hit extra card or not, while user score < 21.
+        # プレイヤーがヒットするかどうか判断
         while player["score"] <= BLACK_JACK:
             show_player_state()
             do_you_hit = input("Type 'y' to get another card, type 'n' to pass: ").lower()
@@ -168,7 +168,6 @@ while True:
             else:
                 hit("player")
 
-        # プレイヤーがヒットするかどうか判断
         if check_magic_conditions(player["score"], computer["score"]):
             show_player_state()
             declare_final_condition()
