@@ -8,16 +8,16 @@ from logo import art
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# constants
-deck = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-init_handout = 2    # initial handout is two cards for each
-ace = 11            # original ace
-alt_ace = 1         # alternative ace
-magic_number = 12   # magic number from my logical thinking
-black_jack = 21     # ultimate score
-computer_lmt = 17   # after user's hit, computer consider hit or not base upon this limit score
+# global constants
+DECK = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+INIT_HANDOUT = 2    # initial handout is two cards for each
+ACE = 11            # original ace
+ALT_ACE = 1         # alternative ace
+MAGIC_NUMBER = 12   # magic number from my logical thinking
+BLACK_JACK = 21     # ultimate score
+COMPUTER_LMT = 17   # after user's hit, computer consider hit or not base upon this limit score
 
-# At start, nothing is empty:
+# At start, EVERYTHING is empty:
 player = {}
 computer = {}
 hands = {}
@@ -35,32 +35,32 @@ def reset_hands():
 # Magic Conditions
 def check_magic_conditions():
     global magic_conditions
-    cdt_0 = (player["score"] == black_jack)
-    cdt_1 = (computer["score"] == black_jack)
-    cdt_2 = (player["score"] > black_jack)
-    cdt_3 = (computer["score"] > black_jack)
+    cdt_0 = (player["score"] == BLACK_JACK)
+    cdt_1 = (computer["score"] == BLACK_JACK)
+    cdt_2 = (player["score"] > BLACK_JACK)
+    cdt_3 = (computer["score"] > BLACK_JACK)
     magic_conditions = [cdt_0, cdt_1, cdt_2, cdt_3]
     return sum(magic_conditions)
 
 # function to calculate score
 def calc_score(cards: list):
     dummy_lst = []
-    if ace in cards:
-        ace_cnt = cards.count(ace)
-        score_lmt = magic_number - ace_cnt
-        score_without_ace = sum([_ for _ in cards if _ != ace])
+    if ACE in cards:
+        ace_cnt = cards.count(ACE)
+        score_lmt = MAGIC_NUMBER - ace_cnt
+        score_without_ace = sum([_ for _ in cards if _ != ACE])
         if score_without_ace >= score_lmt:
             for card in cards:
-                if card == ace:
-                    dummy_lst.append(alt_ace)
+                if card == ACE:
+                    dummy_lst.append(ALT_ACE)
                 else:
                     dummy_lst.append(card)
         else:
-            first_ace_idx = cards.index(ace)
+            first_ace_idx = cards.index(ACE)
             for idx in range(len(cards)):
                 if idx != first_ace_idx:
-                    if cards[idx] == ace:
-                        dummy_lst.append(alt_ace)
+                    if cards[idx] == ACE:
+                        dummy_lst.append(ALT_ACE)
                     else:
                         dummy_lst.append(cards[idx])
                 else:
@@ -72,9 +72,9 @@ def calc_score(cards: list):
 
 # procedure to hand out each two cards for each and update the database
 def hand_out():
-    for _ in range(init_handout):
-        player["cards"].append(random.choice(deck))
-        computer["cards"].append(random.choice(deck))
+    for _ in range(INIT_HANDOUT):
+        player["cards"].append(random.choice(DECK))
+        computer["cards"].append(random.choice(DECK))
         player["score"] = calc_score(player["cards"])
         computer["score"] = calc_score(computer["cards"])
         hands["player"] = player
@@ -88,11 +88,11 @@ def hit(who: str):
     if who in players:
         idx = players.index(who)
         if idx == player_idx:
-            player["cards"].append(random.choice(deck))
+            player["cards"].append(random.choice(DECK))
             player["score"] = calc_score(player["cards"])
             hands["player"] = player
         else:
-            computer["cards"].append(random.choice(deck))
+            computer["cards"].append(random.choice(DECK))
             computer["score"] = calc_score(computer["cards"])
             hands["computer"] = computer
 
@@ -116,17 +116,17 @@ def declare_winner_under_magic_conditions():
     cdt_3 = magic_conditions[3]
     # one or both have score of 21
     if cdt_0 or cdt_1:
-        if player["score"] != black_jack:
+        if player["score"] != BLACK_JACK:
             print("You Lose😭 Computer has Blackjack.")
-        elif computer["score"] != black_jack:
+        elif computer["score"] != BLACK_JACK:
             print("You win with Blackjack😃")
         else:
             print("Both have Blackjack. Draw🙃")
     # one has score of over 21
     elif cdt_2 or cdt_3:
-        if player["score"] > black_jack:
+        if player["score"] > BLACK_JACK:
             print("You lose😭")
-        elif computer["score"] > black_jack:
+        elif computer["score"] > BLACK_JACK:
             print("You win😃")
 
     # both have score of under 21
@@ -143,7 +143,7 @@ while True:
     # reset the database
     reset_hands()
 
-    play = input("Do you want to play a game of Blackjack? Type y or n: ")
+    play = input("Do you want to play a game of Blackjack? Type y or n: ").lower()
     if play != 'y':
         clear_screen()
         break
@@ -159,9 +159,9 @@ while True:
             continue
         else:
             # Ask user to hit extra card or not, while user score < 21.
-            while player["score"] <= black_jack:
+            while player["score"] <= BLACK_JACK:
                 show_player_state()
-                do_you_hit = input("Type 'y' to get another card, type 'n' to pass: ")
+                do_you_hit = input("Type 'y' to get another card, type 'n' to pass: ").lower()
                 if do_you_hit != 'y':
                     break
                 else:
@@ -173,7 +173,7 @@ while True:
             declare_winner_under_magic_conditions()
             continue
         else:
-            while computer["score"] < computer_lmt:
+            while computer["score"] < COMPUTER_LMT:
                 hit("computer")
 
         show_player_state()
