@@ -157,29 +157,30 @@ while True:
             decl_fnl_cond()
             declare_winner_under_magic_conditions()
             continue
-        else:
-            # Ask user to hit extra card or not, while user score < 21.
-            while player["score"] <= BLACK_JACK:
-                show_player_state()
-                do_you_hit = input("Type 'y' to get another card, type 'n' to pass: ").lower()
-                if do_you_hit != 'y':
-                    break
-                else:
-                    hit("player")
+
+        # Ask user to hit extra card or not, while user score < 21.
+        while player["score"] <= BLACK_JACK:
+            show_player_state()
+            do_you_hit = input("Type 'y' to get another card, type 'n' to pass: ").lower()
+            if do_you_hit != 'y':
+                break
+            else:
+                hit("player")
 
         if check_magic_conditions():
             show_player_state()
             decl_fnl_cond()
             declare_winner_under_magic_conditions()
             continue
-        else:
-            while computer["score"] < COMPUTER_LMT:
-                hit("computer")
+
+        while computer["score"] < COMPUTER_LMT:
+            hit("computer")
 
         show_player_state()
         decl_fnl_cond()
         if check_magic_conditions():
             declare_winner_under_magic_conditions()
-        else:
-            declare_winner_under_normal_condition()
             continue
+
+        declare_winner_under_normal_condition()
+        continue
