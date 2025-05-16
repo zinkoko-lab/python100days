@@ -32,12 +32,12 @@ def reset_hands():
     hands["computer"] = computer
 
 # 勝敗に関わる条件（ブラックジャック or バースト）をチェック
-def check_magic_conditions():
+def check_magic_conditions(player_score: int, computer_score):
     global magic_conditions
-    cdt_0 = (player["score"] == BLACK_JACK)
-    cdt_1 = (computer["score"] == BLACK_JACK)
-    cdt_2 = (player["score"] > BLACK_JACK)
-    cdt_3 = (computer["score"] > BLACK_JACK)
+    cdt_0 = (player_score == BLACK_JACK)
+    cdt_1 = (computer_score == BLACK_JACK)
+    cdt_2 = (player_score > BLACK_JACK)
+    cdt_3 = (computer_score > BLACK_JACK)
     magic_conditions = [cdt_0, cdt_1, cdt_2, cdt_3]
     return sum(magic_conditions)
 
@@ -153,7 +153,7 @@ while True:
         hand_out()
 
         # 最初の2枚でブラックジャックやバーストかどうか判定
-        if check_magic_conditions():
+        if check_magic_conditions(player["score"], computer["score"]):
             show_player_state()
             decl_fnl_cond()
             declare_winner_under_magic_conditions()
@@ -169,7 +169,7 @@ while True:
                 hit("player")
 
         # プレイヤーがヒットするかどうか判断
-        if check_magic_conditions():
+        if check_magic_conditions(player["score"], computer["score"]):
             show_player_state()
             decl_fnl_cond()
             declare_winner_under_magic_conditions()
@@ -181,7 +181,7 @@ while True:
 
         show_player_state()
         decl_fnl_cond()
-        if check_magic_conditions():
+        if check_magic_conditions(player["score"], computer["score"]):
             declare_winner_under_magic_conditions()
             continue
 
