@@ -3,28 +3,26 @@ import random
 import os
 from logo import art
 
-# ターミナルの画面をクリアする関数を定義
-# os.name が 'nt' の場合は Windows ⇒ 'cls' コマンド
-# それ以外（macOS / Linux）の場合は 'clear' コマンドを使用
+# ターミナルをクリアする関数（Windows は 'cls'、それ以外は 'clear' を使用）
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# global constants
+# ゲーム内定数
 DECK = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-INIT_HANDOUT = 2    # initial handout is two cards for each
-ACE = 11            # original ace
-ALT_ACE = 1         # alternative ace
-MAGIC_NUMBER = 12   # magic number from my logical thinking
-BLACK_JACK = 21     # ultimate score
-COMPUTER_LMT = 17   # after user's hit, computer consider hit or not base upon this limit score
+INIT_HANDOUT = 2    # 初期配布カード数
+ACE = 11            # エースのデフォルト値
+ALT_ACE = 1         # エースがバースト回避で1としてカウントされる場合
+MAGIC_NUMBER = 12   # エース調整用の閾値
+BLACK_JACK = 21     # ブラックジャックの点数
+COMPUTER_LMT = 17   # コンピューターがヒットするかの判断基準スコア
 
-# At start, EVERYTHING is empty:
+# プレイヤーとコンピュータの状態（カードとスコア）を格納
 player = {}
 computer = {}
 hands = {}
 magic_conditions = []
 
-# Function to reset info
+# プレイヤーとコンピュータの状態を初期化
 def reset_hands():
     player["cards"] = []
     player["score"] = 0
@@ -33,7 +31,7 @@ def reset_hands():
     hands["player"] = player
     hands["computer"] = computer
 
-# Magic Conditions
+# 勝敗に関わる条件（ブラックジャック or バースト）をチェック
 def check_magic_conditions():
     global magic_conditions
     cdt_0 = (player["score"] == BLACK_JACK)
@@ -43,7 +41,7 @@ def check_magic_conditions():
     magic_conditions = [cdt_0, cdt_1, cdt_2, cdt_3]
     return sum(magic_conditions)
 
-# function to calculate score
+# カードのスコア計算（エースの調整を含む）
 def calc_score(cards: list):
     dummy_lst = []
     if ACE in cards:
@@ -71,7 +69,7 @@ def calc_score(cards: list):
 
     return sum(dummy_lst)
 
-# procedure to hand out each two cards for each and update the database
+# 最初に各プレイヤーに2枚ずつカードを配る
 def hand_out():
     for _ in range(INIT_HANDOUT):
         player["cards"].append(random.choice(DECK))
@@ -81,7 +79,7 @@ def hand_out():
         hands["player"] = player
         hands["computer"] = computer
 
-# procedure of to hit and update the database
+# 指定されたプレイヤー（playerまたはcomputer）にカードを1枚追加
 def hit(who: str):
     players = list(hands.keys())
     player_idx = players.index("player")
@@ -97,19 +95,18 @@ def hit(who: str):
             computer["score"] = calc_score(computer["cards"])
             hands["computer"] = computer
 
-# procedure to show all the player's cards and score
-# and show the first card of computer
+# プレイヤーのカードとスコア、コンピュータの1枚目のカードを表示
 def show_player_state():
         print(f"\tYour cards: {player["cards"]}, current score: {player["score"]}")
         print(f"\tComputer's first card: {computer["cards"][0]}")
 
-# procedure to declare final condition
+# ゲーム終了時に両者のカードとスコアを表示ｓ
 def decl_fnl_cond():
     print(f"\tYour final hand: {player["cards"]}, final score: {player["score"]}")
     print(f"\tComputer's final hand: {computer["cards"]}, final score: {computer["score"]}")
     print("\n")
 
-# procedure to judge who is winner
+# ブラックジャックやバーストがあった場合の勝敗判定
 def declare_winner_under_magic_conditions():
     cdt_0 = magic_conditions[0]
     cdt_1 = magic_conditions[1]
@@ -130,7 +127,7 @@ def declare_winner_under_magic_conditions():
         elif computer["score"] > BLACK_JACK:
             print("You win😃")
 
-    # both have score of under 21
+# 通常条件下での勝敗判定（ブラックジャックでもバーストでもない）
 def declare_winner_under_normal_condition():
     if player["score"] < computer["score"]:
         print("You lose😭")
@@ -139,10 +136,12 @@ def declare_winner_under_normal_condition():
     else:
         print("Draw🙃")
 
+# -------------------------------
+# メインゲームループ開始
+# -------------------------------
 clear_screen()
 while True:
-    # reset the database
-    reset_hands()
+    reset_hands()   # 状態の初期化
 
     play = input("Do you want to play a game of Blackjack? Type y or n: ").lower()
     if play != 'y':
@@ -153,6 +152,7 @@ while True:
         print(art)
         hand_out()
 
+        # 最初の2枚でブラックジャックやバーストかどうか判定
         if check_magic_conditions():
             show_player_state()
             decl_fnl_cond()
@@ -168,12 +168,14 @@ while True:
             else:
                 hit("player")
 
+        # プレイヤーがヒットするかどうか判断
         if check_magic_conditions():
             show_player_state()
             decl_fnl_cond()
             declare_winner_under_magic_conditions()
             continue
 
+        # コンピューターが17未満ならヒット
         while computer["score"] < COMPUTER_LMT:
             hit("computer")
 
@@ -183,5 +185,6 @@ while True:
             declare_winner_under_magic_conditions()
             continue
 
+        # 通常勝負
         declare_winner_under_normal_condition()
         continue
