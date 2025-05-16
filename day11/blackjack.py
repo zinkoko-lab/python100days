@@ -17,11 +17,30 @@ magic_number = 12   # magic number from my logical thinking
 black_jack = 21     # ultimate score
 computer_lmt = 17   # after user's hit, computer consider hit or not base upon this limit score
 
-# procedure to hand out each two cards for each
-def hand_out():
-    for _ in range(init_handout):
-        hands["player"]["cards"].append(random.choice(deck))
-        hands["computer"]["cards"].append(random.choice(deck))
+# At start, nothing is empty:
+player = {}
+computer = {}
+hands = {}
+magic_conditions = []
+
+# Function to reset info
+def reset_hands():
+    player["cards"] = []
+    player["score"] = 0
+    computer["cards"] = []
+    computer["score"] = 0
+    hands["player"] = player
+    hands["computer"] = computer
+
+# Magic Conditions
+def check_magic_conditions():
+    global magic_conditions
+    cdt_0 = (player["score"] == black_jack)
+    cdt_1 = (computer["score"] == black_jack)
+    cdt_2 = (player["score"] > black_jack)
+    cdt_3 = (computer["score"] > black_jack)
+    magic_conditions = [cdt_0, cdt_1, cdt_2, cdt_3]
+    return sum(magic_conditions)
 
 # function to calculate score
 def calc_score(cards: list):
@@ -51,127 +70,116 @@ def calc_score(cards: list):
 
     return sum(dummy_lst)
 
-# calculate the scores of both
-def save_scores():
-    hands["player"]["score"] = calc_score(hands["player"]["cards"])
-    hands["computer"]["score"] = calc_score(hands["computer"]["cards"])
+# procedure to hand out each two cards for each and update the database
+def hand_out():
+    for _ in range(init_handout):
+        player["cards"].append(random.choice(deck))
+        computer["cards"].append(random.choice(deck))
+        player["score"] = calc_score(player["cards"])
+        computer["score"] = calc_score(computer["cards"])
+        hands["player"] = player
+        hands["computer"] = computer
 
-# procedure of to hit
+# procedure of to hit and update the database
 def hit(who: str):
     players = list(hands.keys())
+    player_idx = players.index("player")
+    computer_idx = players.index("computer")
     if who in players:
-        hands[who]["cards"].append(random.choice(deck))
-        hands[who]["score"] = calc_score(hands[who]["cards"])
+        idx = players.index(who)
+        if idx == player_idx:
+            player["cards"].append(random.choice(deck))
+            player["score"] = calc_score(player["cards"])
+            hands["player"] = player
+        else:
+            computer["cards"].append(random.choice(deck))
+            computer["score"] = calc_score(computer["cards"])
+            hands["computer"] = computer
 
 # procedure to show all the player's cards and score
 # and show the first card of computer
-def show():
-        print(f"\tYour cards: {hands["player"]["cards"]}, current score: {hands['player']["score"]}")
-        print(f"\tComputer's first card: {hands['computer']["cards"][0]}")
+def show_player_state():
+        print(f"\tYour cards: {player["cards"]}, current score: {player["score"]}")
+        print(f"\tComputer's first card: {computer["cards"][0]}")
 
 # procedure to declare final condition
 def decl_fnl_cond():
-    print(f"\tYour final hand: {hands['player']["cards"]}, final score: {hands['player']["score"]}")
-    print(f"\tComputer's final hand: {hands['computer']["cards"]}, final score: {hands['computer']["score"]}")
+    print(f"\tYour final hand: {player["cards"]}, final score: {player["score"]}")
+    print(f"\tComputer's final hand: {computer["cards"]}, final score: {computer["score"]}")
+    print("\n")
 
 # procedure to judge who is winner
-def judge():
+def declare_winner_under_magic_conditions():
+    cdt_0 = magic_conditions[0]
+    cdt_1 = magic_conditions[1]
+    cdt_2 = magic_conditions[2]
+    cdt_3 = magic_conditions[3]
     # one or both have score of 21
-    if cdt_1 or cdt_2:
-        if player_score != black_jack:
+    if cdt_0 or cdt_1:
+        if player["score"] != black_jack:
             print("You Lose😭 Computer has Blackjack.")
-        elif computer_score != black_jack:
+        elif computer["score"] != black_jack:
             print("You win with Blackjack😃")
         else:
             print("Both have Blackjack. Draw🙃")
-
     # one has score of over 21
-    elif cdt_3 or cdt_4:
-        if player_score > black_jack:
+    elif cdt_2 or cdt_3:
+        if player["score"] > black_jack:
             print("You lose😭")
-        elif computer_score > black_jack:
+        elif computer["score"] > black_jack:
             print("You win😃")
 
     # both have score of under 21
+def declare_winner_under_normal_condition():
+    if player["score"] < computer["score"]:
+        print("You lose😭")
+    elif player["score"] > computer["score"]:
+        print("You win😃")
     else:
-        if player_score < computer_score:
-            print("You lose😭")
-        elif player_score > computer_score:
-            print("You win😃")
-        else:
-            print("Draw🙃")
+        print("Draw🙃")
 
 clear_screen()
 while True:
-    # database for each(play and computer)
-    hands = {
-            "player": {
-                "cards": [],
-                "score": 0
-            },
-            "computer": {
-                "cards": [],
-                "score": 0
-            }
-        }
+    # reset the database
+    reset_hands()
 
     play = input("Do you want to play a game of Blackjack? Type y or n: ")
     if play != 'y':
+        clear_screen()
         break
     else:
         clear_screen()
         print(art)
         hand_out()
-        save_scores()
-        player_score = hands["player"]["score"]
-        computer_score = hands["computer"]["score"]
 
-        # Magic Conditions
-        cdt_1 = (player_score == black_jack)
-        cdt_2 = (computer_score == black_jack)
-        cdt_3 = (player_score > black_jack)
-        cdt_4 = (computer_score > black_jack)
-
-        if cdt_1 or cdt_2 or cdt_3 or cdt_4:
-            show()
+        if check_magic_conditions():
+            show_player_state()
             decl_fnl_cond()
-            judge()
+            declare_winner_under_magic_conditions()
             continue
         else:
             # Ask user to hit extra card or not, while user score < 21.
-            while player_score <= black_jack:
-                show()
+            while player["score"] <= black_jack:
+                show_player_state()
                 do_you_hit = input("Type 'y' to get another card, type 'n' to pass: ")
                 if do_you_hit != 'y':
                     break
                 else:
                     hit("player")
-                    player_score = hands["player"]["score"]
 
-        # Magic Conditions
-        cdt_1 = (player_score == black_jack)
-        cdt_2 = (computer_score == black_jack)
-        cdt_3 = (player_score > black_jack)
-        cdt_4 = (computer_score > black_jack)
-
-        if cdt_1 or cdt_2 or cdt_3 or cdt_4:
-            show()
+        if check_magic_conditions():
+            show_player_state()
             decl_fnl_cond()
-            judge()
+            declare_winner_under_magic_conditions()
             continue
         else:
-            while computer_score < computer_lmt:
+            while computer["score"] < computer_lmt:
                 hit("computer")
-                computer_score = hands["computer"]["score"]
 
-        # Magic Conditions
-        cdt_1 = (player_score == black_jack)
-        cdt_2 = (computer_score == black_jack)
-        cdt_3 = (player_score > black_jack)
-        cdt_4 = (computer_score > black_jack)
-
+        show_player_state()
         decl_fnl_cond()
-        judge()
-        continue
-
-clear_screen()
+        if check_magic_conditions():
+            declare_winner_under_magic_conditions()
+        else:
+            declare_winner_under_normal_condition()
+            continue
