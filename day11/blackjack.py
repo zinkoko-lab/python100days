@@ -21,6 +21,10 @@ player = {}
 computer = {}
 hands = {}
 magic_conditions = []
+cdt_0 = False
+cdt_1 = False
+cdt_2 = False
+cdt_3 = False
 
 # プレイヤーとコンピュータの状態を初期化
 def reset_hands():
@@ -33,7 +37,7 @@ def reset_hands():
 
 # 勝敗に関わる条件（ブラックジャック or バースト）をチェック
 def check_magic_conditions(player_score: int, computer_score: int):
-    global magic_conditions
+    global magic_conditions, cdt_0, cdt_1, cdt_2, cdt_3
     cdt_0 = (player_score == BLACK_JACK)
     cdt_1 = (computer_score == BLACK_JACK)
     cdt_2 = (player_score > BLACK_JACK)
@@ -99,42 +103,46 @@ def hit(who: str):
 def show_player_state():
         print(f"\tYour cards: {player["cards"]}, current score: {player["score"]}")
         print(f"\tComputer's first card: {computer["cards"][0]}")
+        print("\n")
 
 # ゲーム終了時に両者のカードとスコアを表示ｓ
 def declare_final_condition():
+    print("\n")
     print(f"\tYour final hand: {player["cards"]}, final score: {player["score"]}")
     print(f"\tComputer's final hand: {computer["cards"]}, final score: {computer["score"]}")
     print("\n")
 
 # ブラックジャックやバーストがあった場合の勝敗判定
 def declare_winner_under_magic_conditions():
-    cdt_0 = magic_conditions[0]
-    cdt_1 = magic_conditions[1]
-    cdt_2 = magic_conditions[2]
-    cdt_3 = magic_conditions[3]
-    # one or both have score of 21
+    show_player_state()
+    declare_final_condition()
     if cdt_0 or cdt_1:
         if player["score"] != BLACK_JACK:
-            print("You Lose😭 Computer has Blackjack.")
+            print("\tYou Lose😭 Computer has Blackjack.")
         elif computer["score"] != BLACK_JACK:
-            print("You win with Blackjack😃")
+            print("\tYou win with Blackjack😃")
         else:
-            print("Both have Blackjack. Draw🙃")
+            print("\tBoth have Blackjack. Draw🙃")
+        print('\n')
     # one has score of over 21
     elif cdt_2 or cdt_3:
         if player["score"] > BLACK_JACK:
-            print("You lose😭")
+            print("\tYou lose😭")
         elif computer["score"] > BLACK_JACK:
-            print("You win😃")
+            print("\tYou win😃")
+        print('\n')
 
 # 通常条件下での勝敗判定（ブラックジャックでもバーストでもない）
 def declare_winner_under_normal_condition():
     if player["score"] < computer["score"]:
-        print("You lose😭")
+        print("\tYou lose😭")
+        print('\n')
     elif player["score"] > computer["score"]:
-        print("You win😃")
+        print("\tYou win😃")
+        print('\n')
     else:
-        print("Draw🙃")
+        print("\tDraw🙃")
+        print('\n')
 
 # -------------------------------
 # メインゲームループ開始
@@ -154,8 +162,6 @@ while True:
 
         # 最初の2枚でブラックジャックやバーストかどうか判定
         if check_magic_conditions(player["score"], computer["score"]):
-            show_player_state()
-            declare_final_condition()
             declare_winner_under_magic_conditions()
             continue
 
@@ -163,14 +169,13 @@ while True:
         while player["score"] <= BLACK_JACK:
             show_player_state()
             do_you_hit = input("Type 'y' to get another card, type 'n' to pass: ").lower()
+            print('\n')
             if do_you_hit != 'y':
                 break
             else:
                 hit("player")
 
         if check_magic_conditions(player["score"], computer["score"]):
-            show_player_state()
-            declare_final_condition()
             declare_winner_under_magic_conditions()
             continue
 
@@ -178,12 +183,12 @@ while True:
         while computer["score"] < COMPUTER_LMT:
             hit("computer")
 
-        show_player_state()
-        declare_final_condition()
         if check_magic_conditions(player["score"], computer["score"]):
             declare_winner_under_magic_conditions()
             continue
 
         # 通常勝負
+        show_player_state()
+        declare_final_condition()
         declare_winner_under_normal_condition()
         continue
