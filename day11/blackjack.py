@@ -107,14 +107,12 @@ def show_player_state():
 
 # ゲーム終了時に両者のカードとスコアを表示ｓ
 def declare_final_condition():
-    print("\n")
     print(f"\tYour final hand: {player["cards"]}, final score: {player["score"]}")
     print(f"\tComputer's final hand: {computer["cards"]}, final score: {computer["score"]}")
     print("\n")
 
 # ブラックジャックやバーストがあった場合の勝敗判定
 def declare_winner_under_magic_conditions():
-    show_player_state()
     declare_final_condition()
     if cdt_0 or cdt_1:
         if player["score"] != BLACK_JACK:
@@ -134,6 +132,7 @@ def declare_winner_under_magic_conditions():
 
 # 通常条件下での勝敗判定（ブラックジャックでもバーストでもない）
 def declare_winner_under_normal_condition():
+    declare_final_condition()
     if player["score"] < computer["score"]:
         print("\tYou lose😭")
         print('\n')
@@ -188,7 +187,5 @@ while True:
             continue
 
         # 通常勝負
-        show_player_state()
-        declare_final_condition()
         declare_winner_under_normal_condition()
         continue
