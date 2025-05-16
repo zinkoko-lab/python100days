@@ -101,7 +101,7 @@ def show_player_state():
         print(f"\tComputer's first card: {computer["cards"][0]}")
 
 # ゲーム終了時に両者のカードとスコアを表示ｓ
-def decl_fnl_cond():
+def declare_final_condition():
     print(f"\tYour final hand: {player["cards"]}, final score: {player["score"]}")
     print(f"\tComputer's final hand: {computer["cards"]}, final score: {computer["score"]}")
     print("\n")
@@ -155,7 +155,7 @@ while True:
         # 最初の2枚でブラックジャックやバーストかどうか判定
         if check_magic_conditions(player["score"], computer["score"]):
             show_player_state()
-            decl_fnl_cond()
+            declare_final_condition()
             declare_winner_under_magic_conditions()
             continue
 
@@ -171,7 +171,7 @@ while True:
         # プレイヤーがヒットするかどうか判断
         if check_magic_conditions(player["score"], computer["score"]):
             show_player_state()
-            decl_fnl_cond()
+            declare_final_condition()
             declare_winner_under_magic_conditions()
             continue
 
@@ -180,7 +180,7 @@ while True:
             hit("computer")
 
         show_player_state()
-        decl_fnl_cond()
+        declare_final_condition()
         if check_magic_conditions(player["score"], computer["score"]):
             declare_winner_under_magic_conditions()
             continue
