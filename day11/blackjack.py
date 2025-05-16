@@ -32,7 +32,7 @@ def reset_hands():
     hands["computer"] = computer
 
 # 勝敗に関わる条件（ブラックジャック or バースト）をチェック
-def check_magic_conditions(player_score: int, computer_score):
+def check_magic_conditions(player_score: int, computer_score: int):
     global magic_conditions
     cdt_0 = (player_score == BLACK_JACK)
     cdt_1 = (computer_score == BLACK_JACK)
