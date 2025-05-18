@@ -137,49 +137,48 @@ def declare_winner_under_normal_condition():
         print("\tDraw🙃")
         print('\n')
 
+# ゲーム本体の関数
+def blackjack():
+    # 最初の2枚でブラックジャックやバーストかどうか判定
+    if check_magic_conditions(player["score"], computer["score"]):
+        declare_winner_under_magic_conditions()
+        return
+
+    # プレイヤーがヒットするかどうか判断
+    while player["score"] <= BLACK_JACK:
+        show_player_state()
+        do_you_hit = input("Type 'y' to get another card, type 'n' to pass: ").lower()
+        print('\n')
+        if do_you_hit != 'y':
+            break
+        else:
+            hit("player")
+
+    if check_magic_conditions(player["score"], computer["score"]):
+        declare_winner_under_magic_conditions()
+        return
+
+    # コンピューターが17未満ならヒット
+    while computer["score"] < COMPUTER_LMT:
+        hit("computer")
+
+    if check_magic_conditions(player["score"], computer["score"]):
+        declare_winner_under_magic_conditions()
+        return
+
+    # 通常勝負
+    declare_winner_under_normal_condition()
+    return
+
 # -------------------------------
 # メインゲームループ開始
 # -------------------------------
 clear_screen()
-while True:
+while input("Do you want to play a game of Blackjack? Type y or n: ").lower() == 'y':
+    clear_screen()
+    print(art)      # ASCII ARTの表示
     reset_hands()   # 状態の初期化
+    hand_out()      # カードを配る
+    blackjack()     # バラックジャックの呼び出し
 
-    play = input("Do you want to play a game of Blackjack? Type y or n: ").lower()
-    if play != 'y':
-        clear_screen()
-        break
-    else:
-        clear_screen()
-        print(art)
-        hand_out()
-
-        # 最初の2枚でブラックジャックやバーストかどうか判定
-        if check_magic_conditions(player["score"], computer["score"]):
-            declare_winner_under_magic_conditions()
-            continue
-
-        # プレイヤーがヒットするかどうか判断
-        while player["score"] <= BLACK_JACK:
-            show_player_state()
-            do_you_hit = input("Type 'y' to get another card, type 'n' to pass: ").lower()
-            print('\n')
-            if do_you_hit != 'y':
-                break
-            else:
-                hit("player")
-
-        if check_magic_conditions(player["score"], computer["score"]):
-            declare_winner_under_magic_conditions()
-            continue
-
-        # コンピューターが17未満ならヒット
-        while computer["score"] < COMPUTER_LMT:
-            hit("computer")
-
-        if check_magic_conditions(player["score"], computer["score"]):
-            declare_winner_under_magic_conditions()
-            continue
-
-        # 通常勝負
-        declare_winner_under_normal_condition()
-        continue
+clear_screen()
