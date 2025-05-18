@@ -110,28 +110,28 @@ def declare_winner_under_magic_conditions():
     declare_final_condition()
     if cdt_0 or cdt_1:
         if player["score"] != BLACK_JACK:
-            print("\tYou Lose😱 Computer has Blackjack.")
+            print("\tYou Lose, opponent has Blackjack 😱")
         elif computer["score"] != BLACK_JACK:
-            print("\tYou win with Blackjack😎")
+            print("\tYou win with a Blackjack😎")
         else:
             print("\tBoth have Blackjack. Draw🙃")
         print('\n')
     # one has score of over 21
     elif cdt_2 or cdt_3:
         if player["score"] > BLACK_JACK:
-            print("\tYou lose😭")
+            print("\tYou went over. You lose😭")
         elif computer["score"] > BLACK_JACK:
-            print("\tYou win😃")
+            print("\tOpponent went over. You win😃")
         print('\n')
 
 # 通常条件下での勝敗判定（ブラックジャックでもバーストでもない）
 def declare_winner_under_normal_condition():
     declare_final_condition()
     if player["score"] < computer["score"]:
-        print("\tYou lose😭")
+        print("\tYou went over. You lose 😭")
         print('\n')
     elif player["score"] > computer["score"]:
-        print("\tYou win😃")
+        print("\tOpponent went over. You win😃")
         print('\n')
     else:
         print("\tDraw🙃")
