@@ -19,12 +19,11 @@ COMPUTER_LMT = 17   # コンピューターがヒットするかの判断基準�
 # プレイヤーとコンピュータの状態（カードとスコア）を格納
 player = {}
 computer = {}
-hands = {}
 magic_conditions = []
-cdt_0 = False
-cdt_1 = False
-cdt_2 = False
-cdt_3 = False
+cdt_0 = False   # プレイヤーがブラックジャックであるかどうか
+cdt_1 = False   # コンピュータがブラックジャックであるかどうか
+cdt_2 = False   # プレイヤーがバーストであるかどうか
+cdt_3 = False   # コンピュータがバーストであるかどうか
 
 # プレイヤーとコンピュータの状態を初期化
 def reset_hands():
@@ -32,8 +31,6 @@ def reset_hands():
     player["score"] = 0
     computer["cards"] = []
     computer["score"] = 0
-    hands["player"] = player
-    hands["computer"] = computer
 
 # 勝敗に関わる条件（ブラックジャック or バースト）をチェック
 def check_magic_conditions(player_score: int, computer_score: int):
@@ -80,12 +77,10 @@ def hand_out():
         computer["cards"].append(random.choice(DECK))
         player["score"] = calc_score(player["cards"])
         computer["score"] = calc_score(computer["cards"])
-        hands["player"] = player
-        hands["computer"] = computer
 
 # 指定されたプレイヤー（playerまたはcomputer）にカードを1枚追加
 def hit(who: str):
-    players = list(hands.keys())
+    players = ["player", "computer"]
     player_idx = players.index("player")
     computer_idx = players.index("computer")
     if who in players:
@@ -93,11 +88,10 @@ def hit(who: str):
         if idx == player_idx:
             player["cards"].append(random.choice(DECK))
             player["score"] = calc_score(player["cards"])
-            hands["player"] = player
         else:
             computer["cards"].append(random.choice(DECK))
             computer["score"] = calc_score(computer["cards"])
-            hands["computer"] = computer
+
 
 # プレイヤーのカードとスコア、コンピュータの1枚目のカードを表示
 def show_player_state():
