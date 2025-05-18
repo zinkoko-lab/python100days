@@ -110,9 +110,9 @@ def declare_winner_under_magic_conditions():
     declare_final_condition()
     if cdt_0 or cdt_1:
         if player["score"] != BLACK_JACK:
-            print("\tYou Lose😭 Computer has Blackjack.")
+            print("\tYou Lose😱 Computer has Blackjack.")
         elif computer["score"] != BLACK_JACK:
-            print("\tYou win with Blackjack😃")
+            print("\tYou win with Blackjack😎")
         else:
             print("\tBoth have Blackjack. Draw🙃")
         print('\n')
