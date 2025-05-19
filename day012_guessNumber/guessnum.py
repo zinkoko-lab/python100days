@@ -1,14 +1,22 @@
-import random
+from random import randint
 import logo
 import os
 
-# Generate a random number from 1 to 100
-rdn_num = random.randrange(1, 101)
+# Global constance
+EASY_LEVEL_TURNS = 10
+HARD_LEVEL_TURNS = 5
 
-greeting = r'''
-Welcome to the Number Guessing Game!
-I'm thinking of a number between 1 and 100.
-'''
+# Generate a random number from 1 to 100
+def generate_number():
+    return randint(1, 100)
+
+def greeting():
+    """Print the greeting text of the game."""
+    greeting_text = r'''
+    Welcome to the Number Guessing Game!
+    I'm thinking of a number between 1 and 100.
+    '''
+    print(greeting_text)
 
 def clear_screen():
     """Clear the terminal screen."""
@@ -17,7 +25,10 @@ def clear_screen():
 def choose_level(level: str):
     """Return the number of attempts based on difficulty level."""
     if level in ['easy', 'hard']:
-        return 10 if level == 'easy' else 5
+        if level == 'easy':
+            return EASY_LEVEL_TURNS
+        else:
+            return HARD_LEVEL_TURNS
     return False
 
 def guess_a_number():
@@ -29,16 +40,16 @@ def guess_a_number():
     except:
         return False
 
-def get_a_hint(number: int):
+def get_a_hint(guessed_number: int, actual_number: int):
     """Give feedback on the guessed number compared to the correct answer."""
-    if number > rdn_num:
+    if guessed_number > actual_number:
         print("Too high.")
         return False
-    elif number < rdn_num:
+    elif guessed_number < actual_number:
         print("Too low.")
         return False
     else:
-        print(f"You got it! The answer was {rdn_num}\n")
+        print(f"You got it! The answer was {actual_number}\n")
         return True
 
 def decrease_life(cur_life: int):
@@ -50,31 +61,35 @@ def decrease_life(cur_life: int):
         print("You've run out of guesses. Restart the game.")
     return cur_life
 
-while input("Do you want to play the game \"GUESS THE NUMBER\".\nType 'y' or 'n': ").lower() == 'y':
-    clear_screen()
-    print(logo.game_logo)
-    print(greeting)
-
+def play_the_game():
+    rdn_number = generate_number()
     level_input = input("Choose a difficulty. Type 'easy' or 'hard': ").lower()
     life = choose_level(level_input)
 
     if life:
         while life > 0:
-            a_number = guess_a_number()
-            if a_number:
-                result = get_a_hint(a_number)
+            input_number = guess_a_number()
+            if input_number:
+                result = get_a_hint(input_number, rdn_number)
                 if result:
-                    break
+                    return
                 else:
                     if life > 1:
                         print("Guess again.")
                     life = decrease_life(life)
             else:
                 print("You typed wrong input. Restart the game.\n")
-                break
+                return
         if life == 0:
             print(logo.game_over + '\n')
     else:
         print("You typed wrong input. Restart the game.\n")
+        return
+
+while input("Do you want to play the game \"GUESS THE NUMBER\".\nType 'y' or 'n': ").lower() == 'y':
+    clear_screen()
+    print(logo.game_logo)
+    greeting()
+    play_the_game()
 
 clear_screen()
