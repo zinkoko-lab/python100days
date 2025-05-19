@@ -173,7 +173,6 @@ def blackjack():
 # -------------------------------
 # メインゲームループ開始
 # -------------------------------
-clear_screen()
 while input("Do you want to play a game of Blackjack? Type y or n: ").lower() == 'y':
     clear_screen()
     print(art)      # ASCII ARTの表示
