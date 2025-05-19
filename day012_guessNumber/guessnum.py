@@ -2,12 +2,12 @@ from random import randint
 import logo
 import os
 
-# Global constance
+# Global variables
 EASY_LEVEL_TURNS = 10
 HARD_LEVEL_TURNS = 5
 
-# Generate a random number from 1 to 100
 def generate_number():
+    """Generate a random number from 1 to 100"""
     return randint(1, 100)
 
 def greeting():
@@ -62,10 +62,10 @@ def decrease_life(cur_life: int):
     return cur_life
 
 def play_the_game():
+    """Main function to play the game."""
     rdn_number = generate_number()
     level_input = input("Choose a difficulty. Type 'easy' or 'hard': ").lower()
     life = choose_level(level_input)
-
     if life:
         while life > 0:
             input_number = guess_a_number()
@@ -82,10 +82,14 @@ def play_the_game():
                 return
         if life == 0:
             print(logo.game_over + '\n')
+            return
     else:
         print("You typed wrong input. Restart the game.\n")
         return
 
+# -------------------------------
+# Main Game Loop
+# -------------------------------
 while input("Do you want to play the game \"GUESS THE NUMBER\".\nType 'y' or 'n': ").lower() == 'y':
     clear_screen()
     print(logo.game_logo)
