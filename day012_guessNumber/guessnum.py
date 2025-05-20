@@ -58,7 +58,7 @@ def decrease_life(cur_life: int):
     if cur_life > 0:
         print(f"You have {cur_life} attempts remaining to guess the number.\n")
     else:
-        print("You've run out of guesses. Restart the game.")
+        print("You've run out of guesses.")
     return cur_life
 
 def play_the_game():
@@ -81,6 +81,7 @@ def play_the_game():
                 print("You typed wrong input. Restart the game.\n")
                 return
         if life == 0:
+            print(f"The answer was {rdn_number}.\n")
             print(logo.game_over + '\n')
             return
     else:
