@@ -1,57 +1,68 @@
 from random import choice
+import os
 import art
 from game_data import data
 
-# =================================================================
+def clear_screen():
+    """Clear the terminal screen."""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-# generate a number for data_A and pop from the index list
-# index for data A = index list.pot(choice(index list))
+def generate_two_rdm_index(previous_lst: list):
+    lst_of_idx = list(range(len(data)))
+    for i in range(len(previous_lst)):
+        if previous_lst[i] in lst_of_idx:
+            lst_of_idx.remove(previous_lst[i])
+    if len(previous_lst) == 2:
+        previous_lst.remove(previous_lst[0])
+        previous_lst.append(choice(lst_of_idx))
+    else:
+        for _ in range(2):
+            previous_lst.append(choice(lst_of_idx))
+    return previous_lst
 
-# generate a number for data_B and pop from the index list
-# index for data B = index list.pot(choice(index list))
+rdm_idx = list()
+result = True
+score = 0
 
-# use index for data A and B to play the game
+while result:
+    rdm_idx = generate_two_rdm_index(rdm_idx)
+    # for data A,
+    data_a = data[rdm_idx[0]]
+    name_a = data_a["name"]
+    flr_cnt_a = data_a["follower_count"]
+    des_a = data_a["description"]
+    country_a = data_a["country"]
 
-# If the player alive:
+    # for data A,
+    data_b = data[rdm_idx[1]]
+    name_b = data_b["name"]
+    flr_cnt_b = data_b["follower_count"]
+    des_b = data_b["description"]
+    country_b = data_b["country"]
 
-# index for data A = index for data B
+    clear_screen()
+    print(art.logo)
+    if score > 0:
+        print(f"You're right! Current score: {score}")
+    print(f"Compare A: {name_a}, {des_a}, from {country_a}.")
 
-# generate a number for data_B and pop from the index list
-# index for data B = index list.pot(choice(index list))
+    print(art.vs)
 
-# use index for data A and B to play the game
+    print(f"Against B: {name_b}, {des_b}, from {country_b}.")
 
-# If the player alive:
+    if flr_cnt_a > flr_cnt_b:
+        who_is_higher = 'a'
+    else:
+        who_is_higher = 'b'
 
-# index for data A = index for data B
+    user_input = input("Who has more followers? Type 'A' or 'B': ").lower()
 
-# generate a number for data_B and pop from the index list
-# index for data B = index list.pot(choice(index list))
+    if user_input == who_is_higher:
+        result = True
+        score += 1
+    else:
+        result = False
 
-# use index for data A and B to play the game
-
-# else:
-
-# game is over
-
-# =================================================================
-
-ref_idx = list(range(len(data)))
-print(ref_idx)
-
-def generate_rdn_idx():
-    return ref_idx.pop(choice(ref_idx))
-
-print(f"length of ref_idx: {len(ref_idx)}")
-
-idx_for_data_a = generate_rdn_idx()
-
-print(f"idx for A: {idx_for_data_a}")
-
-print(f"length of ref_idx: {len(ref_idx)}")
-
-idx_for_data_b = generate_rdn_idx()
-
-print(f"idx for B: {idx_for_data_b}")
-
-print(f"length of ref_idx: {len(ref_idx)}")
+clear_screen()
+print(art.logo)
+print(f"Sorry, that's wrong. Final score: {score}")
