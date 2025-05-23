@@ -7,61 +7,63 @@ def clear_screen():
     """Clear the terminal screen."""
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def generate_two_rdm_index(previous_lst: list):
-    lst_of_idx = list(range(len(data)))
-    for i in range(len(previous_lst)):
-        if previous_lst[i] in lst_of_idx:
-            lst_of_idx.remove(previous_lst[i])
-    if len(previous_lst) == 2:
-        previous_lst.remove(previous_lst[0])
-        previous_lst.append(choice(lst_of_idx))
-    else:
+def two_rdm_data(prev_lst: list):
+    idx_lst = list(range(len(data)))
+    next_lst = list()
+    if len(prev_lst) == 0:
         for _ in range(2):
-            previous_lst.append(choice(lst_of_idx))
-    return previous_lst
+            tmp_idx = choice(idx_lst)
+            idx_lst.remove(tmp_idx)
+            next_lst.append(data[tmp_idx])
+    else:
+        next_lst.append(prev_lst[-1])
+        for i in range(2):
+            tmp_idx = data.index(prev_lst[i])
+            idx_lst.remove(tmp_idx)
+        next_lst.append(data[choice(idx_lst)])
 
-rdm_idx = list()
+    return next_lst
+
+def describe_data(who: dict):
+    print(f"{who['name']}, ", end = '')
+    # print(f"{who['follower_count']}, ", end = '')
+    print(f"{who['description']}, ", end = '')
+    print(f"from {who['country']}.")
+
+a_and_b = list()
 result = True
 score = 0
 
 while result:
-    rdm_idx = generate_two_rdm_index(rdm_idx)
-    # for data A,
-    data_a = data[rdm_idx[0]]
-    name_a = data_a["name"]
-    flr_cnt_a = data_a["follower_count"]
-    des_a = data_a["description"]
-    country_a = data_a["country"]
-
-    # for data A,
-    data_b = data[rdm_idx[1]]
-    name_b = data_b["name"]
-    flr_cnt_b = data_b["follower_count"]
-    des_b = data_b["description"]
-    country_b = data_b["country"]
+    a_and_b = two_rdm_data(a_and_b)
+    data_a, data_b = a_and_b
 
     clear_screen()
     print(art.logo)
     if score > 0:
         print(f"You're right! Current score: {score}")
-    print(f"Compare A: {name_a}, {des_a}, from {country_a}.")
 
+    print(f"Compare A: ", end='')
+    describe_data(data_a)
     print(art.vs)
+    print(f"Against B: ", end='')
+    describe_data(data_b)
 
-    print(f"Against B: {name_b}, {des_b}, from {country_b}.")
+    ab_follower_cnt = {
+        'a': data_a["follower_count"],
+        'b': data_b["follower_count"]
+    }
 
-    if flr_cnt_a > flr_cnt_b:
-        who_is_higher = 'a'
-    else:
-        who_is_higher = 'b'
-
-    user_input = input("Who has more followers? Type 'A' or 'B': ").lower()
-
-    if user_input == who_is_higher:
-        result = True
-        score += 1
+    a_or_b = input("Who has more followers? Type 'A' or 'B': ").lower()
+    if a_or_b == 'a':
+        result = ab_follower_cnt[a_or_b] > ab_follower_cnt['b']
+    elif a_or_b == 'b':
+        result = ab_follower_cnt[a_or_b] > ab_follower_cnt['a']
     else:
         result = False
+
+    if result == True:
+        score += 1
 
 clear_screen()
 print(art.logo)
