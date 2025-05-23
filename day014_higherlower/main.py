@@ -8,14 +8,29 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def two_rdm_data(prev_lst: list):
+    """Generate a list of two random data
+    from the variable of game_data.py."""
+
+    # assign a list that contains elements, each represents
+    # the index number of game_data.data
     idx_lst = list(range(len(data)))
+
+    # assign a blank list that's finally return as a result list.
     next_lst = list()
+
+    # at the start of game, there is no data to play.
+    # Under such condition, this function can generate a list of
+    # two random data.
     if len(prev_lst) == 0:
         for _ in range(2):
             tmp_idx = choice(idx_lst)
             idx_lst.remove(tmp_idx)
             next_lst.append(data[tmp_idx])
     else:
+        # in case of data list contain two:
+        # remove the first data of the list
+        # reuse the second data of the list as first data
+        # add a random data as second data
         next_lst.append(prev_lst[-1])
         for i in range(2):
             tmp_idx = data.index(prev_lst[i])
@@ -25,8 +40,10 @@ def two_rdm_data(prev_lst: list):
     return next_lst
 
 def describe_data(who: dict):
+    """Show the name, description, and country of the data.
+    """
     print(f"{who['name']}, ", end = '')
-    # print(f"{who['follower_count']}, ", end = '')
+    # print(f"{who['follower_count']}, ", end = '') # for test
     print(f"{who['description']}, ", end = '')
     print(f"from {who['country']}.")
 
