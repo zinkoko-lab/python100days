@@ -1,87 +1,83 @@
+# 必要なモジュールをインポート
 from random import choice
 import os
 import art
-from game_data import data
+from game_data import data  # 人物やブランドのフォロワー情報を含むデータ
 
 def clear_screen():
-    """Clear the terminal screen."""
-    os.system('cls' if os.name == 'nt' else 'clear')
+    """ターミナル画面をクリアする関数"""
+    os.system('cls' if os.name == 'nt' else 'clear')  # Windowsならcls、それ以外ならclear
 
 def two_rdm_data(prev_lst: list):
-    """Generate a list of two random data
-    from the variable of game_data.py."""
+    """
+    game_data.py のデータからランダムに2件を選びリストで返す関数。
+    直前の結果があれば、1件を引き継ぎ、もう1件は新たに選ぶ。
+    """
+    idx_lst = list(range(len(data)))  # dataのインデックスのリストを作成
+    next_lst = list()  # 次に使用するデータを格納するリスト
 
-    # assign a list that contains elements, each represents
-    # the index number of game_data.data
-    idx_lst = list(range(len(data)))
-
-    # assign a blank list that's finally return as a result list.
-    next_lst = list()
-
-    # at the start of game, there is no data to play.
-    # Under such condition, this function can generate a list of
-    # two random data.
     if len(prev_lst) == 0:
+        # ゲームの開始時はデータが無いため、ランダムに2件選ぶ
         for _ in range(2):
             tmp_idx = choice(idx_lst)
-            idx_lst.remove(tmp_idx)
+            idx_lst.remove(tmp_idx)  # 重複を避けるために選んだインデックスを除去
             next_lst.append(data[tmp_idx])
     else:
-        # in case of data list contain two:
-        # remove the first data of the list
-        # reuse the second data of the list as first data
-        # add a random data as second data
-        next_lst.append(prev_lst[-1])
+        # 一つ前のデータのうち「後ろの要素」を引き継ぎ、もう1件を新たに選ぶ
+        next_lst.append(prev_lst[-1])  # 前回のBを今回のAに
         for i in range(2):
-            tmp_idx = data.index(prev_lst[i])
-            idx_lst.remove(tmp_idx)
-        next_lst.append(data[choice(idx_lst)])
+            tmp_idx = data.index(prev_lst[i])  # すでに使われたデータのインデックス
+            idx_lst.remove(tmp_idx)  # 重複を避けるために除外
+        next_lst.append(data[choice(idx_lst)])  # 新しいデータを追加（今回のB）
 
     return next_lst
 
 def describe_data(who: dict):
-    """Show the name, description, and country of the data.
     """
-    print(f"{who['name']}, ", end = '')
-    # print(f"{who['follower_count']}, ", end = '') # for test
-    print(f"{who['description']}, ", end = '')
+    引数として渡されたデータ（人物など）の内容を表示する関数
+    """
+    print(f"{who['name']}, ", end='')
+    # print(f"{who['follower_count']}, ", end='')  # テスト用にフォロワー数も表示可能
+    print(f"{who['description']}, ", end='')
     print(f"from {who['country']}.")
 
-a_and_b = list()
-result = True
-score = 0
+# --- メイン処理 ---
+a_and_b = list()  # AとBのデータを保持するリスト
+result = True  # ゲーム継続フラグ
+score = 0  # スコアの初期化
 
 while result:
-    a_and_b = two_rdm_data(a_and_b)
-    data_a, data_b = a_and_b
+    a_and_b = two_rdm_data(a_and_b)  # AとBのデータを取得
+    data_a, data_b = a_and_b  # データの展開
 
-    clear_screen()
-    print(art.logo)
+    clear_screen()  # 画面をクリア
+    print(art.logo)  # ロゴを表示
+
     if score > 0:
-        print(f"You're right! Current score: {score}")
+        print(f"You're right! Current score: {score}")  # 正解したときのスコア表示
 
     print(f"Compare A: ", end='')
-    describe_data(data_a)
+    describe_data(data_a)  # Aの情報表示
     print(art.vs)
     print(f"Against B: ", end='')
-    describe_data(data_b)
+    describe_data(data_b)  # Bの情報表示
 
-    ab_follower_cnt = {
-        'a': data_a["follower_count"],
-        'b': data_b["follower_count"]
-    }
+    # ユーザーの選択を入力（小文字化・空白除去）
+    a_or_b = input("Who has more followers? Type 'A' or 'B': ").lower().strip()
 
-    a_or_b = input("Who has more followers? Type 'A' or 'B': ").lower()
+    # 入力結果に応じて正解かどうかを判定
     if a_or_b == 'a':
-        result = ab_follower_cnt[a_or_b] > ab_follower_cnt['b']
+        result = data_a["follower_count"] > data_b["follower_count"]
     elif a_or_b == 'b':
-        result = ab_follower_cnt[a_or_b] > ab_follower_cnt['a']
+        result = data_b["follower_count"] > data_a["follower_count"]
     else:
-        result = False
+        result = False  # 無効な入力時は不正解扱い
 
+    # 正解ならスコア加算
     if result == True:
         score += 1
 
+# ゲーム終了後の表示
 clear_screen()
 print(art.logo)
 print(f"Sorry, that's wrong. Final score: {score}")
