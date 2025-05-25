@@ -4,9 +4,13 @@ import os
 import art
 from game_data import data  # 人物やブランドのフォロワー情報を含むデータ
 
+
 def clear_screen():
     """ターミナル画面をクリアする関数"""
-    os.system('cls' if os.name == 'nt' else 'clear')  # Windowsならcls、それ以外ならclear
+    os.system(
+        "cls" if os.name == "nt" else "clear"
+    )  # Windowsならcls、それ以外ならclear
+
 
 def two_rdm_data(prev_lst: list):
     """
@@ -32,14 +36,16 @@ def two_rdm_data(prev_lst: list):
 
     return next_lst
 
+
 def describe_data(who: dict):
     """
     引数として渡されたデータ（人物など）の内容を表示する関数
     """
-    print(f"{who['name']}, ", end='')
+    print(f"{who['name']}, ", end="")
     # print(f"{who['follower_count']}, ", end='')  # テスト用にフォロワー数も表示可能
-    print(f"{who['description']}, ", end='')
+    print(f"{who['description']}, ", end="")
     print(f"from {who['country']}.")
+
 
 # --- メイン処理 ---
 a_and_b = list()  # AとBのデータを保持するリスト
@@ -56,19 +62,19 @@ while result:
     if score > 0:
         print(f"You're right! Current score: {score}")  # 正解したときのスコア表示
 
-    print(f"Compare A: ", end='')
+    print(f"Compare A: ", end="")
     describe_data(data_a)  # Aの情報表示
     print(art.vs)
-    print(f"Against B: ", end='')
+    print(f"Against B: ", end="")
     describe_data(data_b)  # Bの情報表示
 
     # ユーザーの選択を入力（小文字化・空白除去）
     a_or_b = input("Who has more followers? Type 'A' or 'B': ").lower().strip()
 
     # 入力結果に応じて正解かどうかを判定
-    if a_or_b == 'a':
+    if a_or_b == "a":
         result = data_a["follower_count"] > data_b["follower_count"]
-    elif a_or_b == 'b':
+    elif a_or_b == "b":
         result = data_b["follower_count"] > data_a["follower_count"]
     else:
         result = False  # 無効な入力時は不正解扱い
