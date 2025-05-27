@@ -1,15 +1,13 @@
 # 必要なモジュールをインポート
 from random import choice
-import os
-import art
+from os import system, name
+from art import logo, vs
 from game_data import data  # 人物やブランドのフォロワー情報を含むデータ
 
 
 def clear_screen():
     """ターミナル画面をクリアする関数"""
-    os.system(
-        "cls" if os.name == "nt" else "clear"
-    )  # Windowsならcls、それ以外ならclear
+    system("cls" if name == "nt" else "clear")  # Windowsならcls、それ以外ならclear
 
 
 def two_rdm_data(prev_lst: list):
@@ -47,6 +45,16 @@ def describe_data(who: dict):
     print(f"from {who['country']}.")
 
 
+def check_answer(user_guess: str, a_follower: int, b_follower: int):
+    """入力された結果に応じて正解かどうか判定する"""
+    if user_guess == "a":
+        return a_follower > b_follower
+    elif user_guess == "b":
+        return b_follower > b_follower
+    else:
+        return False  # 無効な入力時は不正解扱い
+
+
 # --- メイン処理 ---
 a_and_b = list()  # AとBのデータを保持するリスト
 result = True  # ゲーム継続フラグ
@@ -57,33 +65,28 @@ while result:
     data_a, data_b = a_and_b  # データの展開
 
     clear_screen()  # 画面をクリア
-    print(art.logo)  # ロゴを表示
+    print(logo)  # ロゴを表示
 
     if score > 0:
         print(f"You're right! Current score: {score}")  # 正解したときのスコア表示
 
     print(f"Compare A: ", end="")
     describe_data(data_a)  # Aの情報表示
-    print(art.vs)
+    print(vs)
     print(f"Against B: ", end="")
     describe_data(data_b)  # Bの情報表示
 
     # ユーザーの選択を入力（小文字化・空白除去）
-    a_or_b = input("Who has more followers? Type 'A' or 'B': ").lower().strip()
+    guess = input("Who has more followers? Type 'A' or 'B': ").lower().strip()
 
     # 入力結果に応じて正解かどうかを判定
-    if a_or_b == "a":
-        result = data_a["follower_count"] > data_b["follower_count"]
-    elif a_or_b == "b":
-        result = data_b["follower_count"] > data_a["follower_count"]
-    else:
-        result = False  # 無効な入力時は不正解扱い
+    result = check_answer(guess, data_a["follower_count"], data_b["follower_count"])
 
     # 正解ならスコア加算
-    if result == True:
+    if result:
         score += 1
 
 # ゲーム終了後の表示
 clear_screen()
-print(art.logo)
+print(logo)
 print(f"Sorry, that's wrong. Final score: {score}")
