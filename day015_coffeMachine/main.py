@@ -1,5 +1,5 @@
 from os import system, name
-from coffee_data import MENU, resources
+from coffee_data import MENU, RESOURCES
 
 # 使用可能なコーヒーの種類を取得（espresso, latte, cappuccino）
 types_of_coffee = list(MENU.keys())
@@ -26,20 +26,18 @@ def return_coffee_data(name_of_coffee: str):
     return MENU[name_of_coffee]
 
 
-# a function to decide the resources are enough or not, is require.
-def check_resources(coffee_data: dict):
+def check_resources(coffee_ingredients: dict):
     """
     コーヒーを作るのに必要な資源が足りているかを確認する。
 
     Args:
-        coffee_data (dict): 作成するコーヒーの情報
+        coffee_ingredients (dict): コーヒーを作るのに必要な資源の量の情報
 
     Returns:
         bool: 全ての材料が足りていればTrue、不足があればFalse
     """
-    coffee_ingredients = coffee_data["ingredients"]
     for ingredient, amount in coffee_ingredients.items():
-        if amount > resources[ingredient]:
+        if amount > RESOURCES[ingredient]:
             print(f"Sorry there is not enough {ingredient}.")
             return False
     return True
@@ -79,27 +77,27 @@ def return_cost(coffee_data: dict):
     return coffee_data["cost"]
 
 
-def update_resource(coffee_data: dict):
+def update_resource(coffee_ingredients: dict, coffee_cost: float):
     """
     使用した材料を減らし、売上（Money）を更新する。
 
     Args:
-        coffee_data (dict): 作成したコーヒーの情報
+        coffee_ingredients (dict): 作成したコーヒーの資源の量の情報
+        coffee_cost (float): 作成したコーヒーの価格
     """
-    coffee_ingredients = coffee_data["ingredients"]
     for ingredient, amount in coffee_ingredients.items():
-        resources[ingredient] -= amount
-    if "money" not in list(resources.keys()):
-        resources["money"] = coffee_data["cost"]
+        RESOURCES[ingredient] -= amount
+    if "money" not in list(RESOURCES.keys()):
+        RESOURCES["money"] = coffee_cost
     else:
-        resources["money"] += coffee_data["cost"]
+        RESOURCES["money"] += coffee_cost
 
 
 def declare_amount_of_resources():
     """
     現在の資源の量を表示する。
     """
-    for resource_name, amount in resources.items():
+    for resource_name, amount in RESOURCES.items():
         if resource_name in ["water", "milk"]:
             print(f"{resource_name}: {amount}ml")
         elif resource_name == "coffee":
@@ -119,12 +117,14 @@ while True:
     # コーヒーの注文処理
     if usr_input in types_of_coffee:
         usr_input_coffee_data = return_coffee_data(usr_input)
-        if check_resources(usr_input_coffee_data):
+        ingredients = usr_input_coffee_data["ingredients"]
+        cost = usr_input_coffee_data["cost"]
+        if check_resources(ingredients):
             inserted_amount = insert_coin()
             coffee_cost = return_cost(usr_input_coffee_data)
             if inserted_amount >= coffee_cost:
                 change = inserted_amount - coffee_cost
-                update_resource(usr_input_coffee_data)
+                update_resource(ingredients, cost)
                 print(f"Here is ${change} in change.")
                 print(f"Here is your {usr_input} ☕️. Enjoy!")
             else:
