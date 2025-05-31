@@ -13,3 +13,8 @@ class Player:
 player_1 = Player(5, "JIN")
 player_1.show()
 player_1.attack()
+
+player_1.name = "JOHN"
+player_1.level = 6
+player_1.show()
+player_1.attack()
