@@ -1,7 +1,8 @@
 # ポリモーフィズムのハンズオンのコードです
 class Worker:
 
-    def __init__(self, name):
+    def __init__(self, id, name):
+        self.id = id
         self.name = name
 
     def work(self):
@@ -27,9 +28,9 @@ class Partner:
 
 
 workers = []
-workers.append(Worker("田中さん"))
-workers.append(Sales("高橋さん"))
-workers.append(Engineer("大林さん"))
+workers.append(Worker(1, "田中さん"))
+workers.append(Sales(2, "高橋さん"))
+workers.append(Engineer(3, "大林さん"))
 workers.append(Partner())
 
 for worker in workers:
