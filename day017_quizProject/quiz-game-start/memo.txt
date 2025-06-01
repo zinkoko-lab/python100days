@@ -1,0 +1,51 @@
+&quot; のようなHTMLエンティティが表示されてしまっていますね。
+これは、問題文（question）に含まれる文字列がHTMLエンティティとしてエンコードされているためです。たとえば：
+
+&quot; → "
+
+という形です。
+
+⸻
+
+🔧 解決策
+
+Pythonでこの問題文を**デコード（アンエスケープ）**する処理を入れれば解決します。
+具体的には、標準ライブラリの html モジュールを使うのが簡単です。
+
+✨ 例
+
+import html
+
+# 例: question の処理
+question = '&quot;HTML&quot; stands for Hypertext Markup Language.'
+decoded_question = html.unescape(question)
+print(decoded_question)
+
+実行結果：
+
+"HTML" stands for Hypertext Markup Language.
+
+
+⸻
+
+🔧 あなたのコードの場合
+
+もし、クイズアプリを作っていて、question をそのまま出力しているなら、問題文を表示する前に必ず以下のようにします。
+
+import html
+
+for question in question_data:
+    print(f"Q: {html.unescape(question['question'])} (True/False)?")
+    # その後にユーザー入力を取得して答え合わせ etc.
+
+
+⸻
+
+🔧 まとめ
+
+✅ HTMLエンティティをデコードするには：
+
+import html
+question = html.unescape(question)
+
+✅ こうすることで " " や ' ' などもちゃんと表示されます！
