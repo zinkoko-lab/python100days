@@ -11,7 +11,7 @@ is_on = True
 
 clear_screen()
 while is_on:
-    # 1.Prompt user by asking “​What would you like?(espresso/latte/cappuccino/):​
+    # 1.Prompt user by asking
     choice = input(f"What would you like?({items}): ").lower().strip()
 
     # 2.Turn off the Coffee Machine by entering "off" to the prompt.
