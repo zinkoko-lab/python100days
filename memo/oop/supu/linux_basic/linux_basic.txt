@@ -1,0 +1,32 @@
+https://www.youtube.com/watch?v=IDIDa8HKOW4&list=PLiaZfx-34L5oLadYpx5I1LhXaVbBFlSqR&index=23
+
+ubuntu の docker imageをダウンロードする
+docker pull ubuntu
+
+ローカルにあるイメージを確認
+docker images
+
+docker run でコンテナを作成.起動
+docker run -d -it --name コンテナ名 image名
+docker run -d -it --name jin-ubuntu ubuntu
+
+docker exec でコンテナ内に移動
+docker exec -it jin-ubuntu bash
+
+ubuntu(debian系) の パッケージ管理ツールは apt / apt-get
+apt は apt-get よりも新しくて、柔軟性が高い
+基本的には apt の使用が推奨されている
+apt install パッケージ名 <- パッケージをインストール
+例 -> apt install git
+
+aptが管理するパッケージリストを更新
+apt update
+
+aptで管理している全てのパッケージをバージョンアップ
+apt upgrade
+
+指定したパッケージだけをバージョンアップしたいときは
+apt install --only-upgrade パッケージ名
+
+パッケージを削除
+apt remove パッケージ名

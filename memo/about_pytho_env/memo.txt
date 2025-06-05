@@ -108,4 +108,12 @@ pip list
 
 その他
 3. conda
+source ~/miniconda3/bin/activate
+conda info -e
+conda create --name 作りたい仮想環境の名前 python=3.12.1
+conda create --name pt100 python=3.12.1
+conda update -n base -c defaults conda
+conda list
+conda install パッケージ名
+
 4. poetry
