@@ -1,1 +1,14 @@
+# pythonの仮想環境ファイルを除外
 .PT100D_homebrew
+
+# VS Code設定ファイルを除外
+.vscode
+
+# Pythonのキャッシュファイルを除外
+__pycache__/
+*.pyc
+*.pyo
+
+# Git関連ファイルを除外
+.git
+.gitignore
