@@ -12,3 +12,6 @@ __pycache__/
 # Git関連ファイルを除外
 .git
 .gitignore
+
+# macOSのFinderがフォルダごとに作成する隠しファイル除外
+.DS_Store

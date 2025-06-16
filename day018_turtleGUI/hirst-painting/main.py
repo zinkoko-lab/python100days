@@ -4,6 +4,7 @@ from colors import color_list
 from random import choice
 
 screen = Screen()
+screen.bgcolor("#E0FFFF")
 
 tt.colormode(255)
 tim = Turtle()
