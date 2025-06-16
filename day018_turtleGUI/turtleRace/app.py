@@ -15,7 +15,7 @@ y = list(range(-125, 126, 50))
 
 for i in range(len(colors)):
     new_turtle = Turtle(shape="turtle")
-    new_turtle.speed(1)
+    new_turtle.speed(2)
     new_turtle.penup()
     new_turtle.color(colors[i])
     new_turtle.goto(x, y[i])
