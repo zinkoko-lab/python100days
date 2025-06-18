@@ -3,19 +3,19 @@ from random import randint
 
 is_race_on = False
 screen = Screen()
-screen.setup(width=500, height=400)
+screen.setup(width=1000, height=400)
 screen.bgcolor("#E0FFFF")
 user_bet = screen.textinput(
     title="Make your bet", prompt="Which turtle will win the race? Enter a color: "
 )
 colors = ["red", "orange", "yellow", "green", "blue", "purple"]
 turtles = []
-x = -230
+x = -(500 - 20)
 y = list(range(-125, 126, 50))
 
 for i in range(len(colors)):
     new_turtle = Turtle(shape="turtle")
-    new_turtle.speed(2)
+    new_turtle.speed(3)
     new_turtle.penup()
     new_turtle.color(colors[i])
     new_turtle.goto(x, y[i])
@@ -26,7 +26,7 @@ if user_bet:
 
 while is_race_on:
     for turtle in turtles:
-        if turtle.xcor() > 230:
+        if turtle.xcor() > (500 - 20):
             is_race_on = False
             winner_color = turtle.pencolor()
             if winner_color == user_bet:
