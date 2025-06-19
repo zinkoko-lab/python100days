@@ -15,3 +15,6 @@ __pycache__/
 
 # macOSのFinderがフォルダごとに作成する隠しファイル除外
 .DS_Store
+
+# pycharm関係
+.idea
