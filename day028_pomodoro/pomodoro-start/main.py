@@ -30,9 +30,9 @@ def start_timer():
     # count: minで受け取る -> sec に変換　-> count * 60
     # count_down(WORK_MIN * 60)
     global reps
-    work_sec = 10
-    short_break_sec = 5
-    long_break_sec = 7
+    work_sec = WORK_MIN * 60
+    short_break_sec = SHORT_BREAK_MIN * 60
+    long_break_sec = LONG_BREAK_MIN * 60
 
     reps += 1
     if reps % 8 == 0:
@@ -66,8 +66,23 @@ def count_down(count):
         check_mark.config(text=check_mark_text)
 
 
+# ---------------------------- ファイルのパス取得 ------------------------------- #
+# PyInstaller環境でもファイルを取得できるパスを返す
+def get_resource_path(relative_path):
+    try:
+        # PyInstallerで実行されている場合
+        base_path = sys._MEIPASS
+    except AttributeError:
+        # 開発環境の場合
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 import tkinter as tk
+import sys
+import os
+
 
 window = tk.Tk()
 window.title("Pomodoro")
@@ -79,9 +94,9 @@ title_label = tk.Label(
 title_label.grid(column=1, row=0)
 
 canvas = tk.Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)
-tomato_image = tk.PhotoImage(
-    file="/Users/zinkoko/projects/python100days/day028_pomodoro/pomodoro-start/tomato.png"
-)
+# tomato.png のパスを取得
+image_data_path = get_resource_path("tomato.png")
+tomato_image = tk.PhotoImage(file=image_data_path)
 canvas.create_image(100, 112, image=tomato_image)
 timer_text = canvas.create_text(
     100, 130, text="00:00", fill="white", font=(FONT_NAME, 35, "bold")
