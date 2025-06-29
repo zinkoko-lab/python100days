@@ -1,5 +1,5 @@
 import pandas as pd
-from os import system, name
+from os import system, name, path
 
 
 def clear_screen():
@@ -16,20 +16,19 @@ nato_phonetic_dict = {row.letter.upper(): row.code for _, row in df.iterrows()}
 
 
 def generate_nato_words():
-    print("Credit to NORTH ATLANTIC TREATY ORGANIZATION")
     input_word = input("Enter a word: ").upper()
-    result = []
-    for letter in input_word:
-        code = nato_phonetic_dict.get(letter)
-        if code:
-            result.append(code)
-        else:
-            print(f"Warning: '{letter}' is not a valid letter.")
-    print(result)
+    try:
+        result = [nato_phonetic_dict[letter] for letter in input_word]
+    except KeyError:
+        print("Sorry, only letters in the alphabet please.")
+        generate_nato_words()
+    else:
+        print(result)
 
 
 while True:
     clear_screen()
+    print("NATO Phonetic Alphabet Project")
     try:
         generate_nato_words()
         do_continue = input("Do you have any other words(y/n): ").lower()
