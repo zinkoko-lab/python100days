@@ -21,3 +21,7 @@ __pycache__/
 
 # key
 *.key
+
+# pyinstaller関係
+dist/
+build/
