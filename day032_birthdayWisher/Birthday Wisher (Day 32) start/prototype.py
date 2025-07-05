@@ -1,14 +1,16 @@
 import smtplib
+import os
+from dotenv import load_dotenv
 
-with open(file="mail_account.txt") as f:
-    data = f.readlines()
-sender_email = data[0].strip()
-password = data[1].strip()
-receiver_email = data[2].strip()
+# .envファイルを読み込む
+load_dotenv()
 
+# 環境変数から値を取得
+sender_email = os.getenv("EMAIL_ADDRESS")
+password = os.getenv("EMAIL_PASSWORD")
+receiver_email = os.getenv("RECEIVER_EMAIL")
 
 with smtplib.SMTP("smtp.gmail.com") as connection:
-    # TLS (Transport Layer Security) を有効にする(盗聴等のセキュリティー対策)
     connection.starttls()
     connection.login(user=sender_email, password=password)
     connection.sendmail(
