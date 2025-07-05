@@ -25,3 +25,6 @@ __pycache__/
 # pyinstaller関係
 dist/
 build/
+
+# for security
+mail_account.txt
