@@ -100,7 +100,3 @@ class QuizInterface:
             self.canvas.config(bg="red")
         self.window.after(1000, func=self.update_score)
         self.window.after(1000, func=self.get_next_question)
-
-
-if __name__ == "__main__":
-    QuizInterface()
