@@ -93,9 +93,6 @@ class QuizInterface:
         is_right = self.quiz.check_answer(user_answer="false")
         self.give_feedback(is_right=is_right)
 
-    def change_canvas_color_white(self):
-        self.canvas.config(bg="white")
-
     def give_feedback(self, is_right):
         if is_right:
             self.canvas.config(bg="green")
