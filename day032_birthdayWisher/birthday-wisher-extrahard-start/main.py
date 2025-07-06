@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from random import choice
 import datetime as dt
+
+# import pytz
 from email.mime.text import MIMEText
 from email.header import Header
 import pandas as pd
@@ -16,6 +18,11 @@ PASSWORD = os.getenv("EMAIL_PASSWORD")
 # Check if today matches a birthday in the birthdays.csv
 df = pd.read_csv("birthdays.csv")
 people_list = df.to_dict(orient="records")
+# utc_now = dt.datetime.now(pytz.utc)
+# tokyo_tz = pytz.timezone("Asia/Tokyo")
+# tokyo_now = utc_now.astimezone(tokyo_tz)
+# tokyo_today = tokyo_now.day
+# current_month = tokyo_now.month
 now = dt.datetime.now()
 today = now.day
 current_month = now.month
