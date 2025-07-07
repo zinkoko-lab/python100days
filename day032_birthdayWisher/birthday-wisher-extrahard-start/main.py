@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from random import choice
 import datetime as dt
 
-# import pytz
+import pytz
 from email.mime.text import MIMEText
 from email.header import Header
 import pandas as pd
@@ -18,19 +18,17 @@ PASSWORD = os.getenv("EMAIL_PASSWORD")
 # Check if today matches a birthday in the birthdays.csv
 df = pd.read_csv("birthdays.csv")
 people_list = df.to_dict(orient="records")
-# utc_now = dt.datetime.now(pytz.utc)
-# tokyo_tz = pytz.timezone("Asia/Tokyo")
-# tokyo_now = utc_now.astimezone(tokyo_tz)
-# tokyo_today = tokyo_now.day
-# current_month = tokyo_now.month
-now = dt.datetime.now()
-today = now.day
-current_month = now.month
+utc_now = dt.datetime.now(pytz.utc)
+tokyo_tz = pytz.timezone("Asia/Tokyo")
+tokyo_now = utc_now.astimezone(tokyo_tz)
+tokyo_today = tokyo_now.day
+current_month = tokyo_now.month
+
 today_birthday_people = []
 for person in people_list:
     someone_birth_day = person["day"]
     someone_birth_month = person["month"]
-    if someone_birth_day == today and someone_birth_month == current_month:
+    if someone_birth_day == tokyo_today and someone_birth_month == current_month:
         today_birthday_people.append(person)
 
 
@@ -55,7 +53,7 @@ if len(today_birthday_people) > 0:
         msg["To"] = receiver_email
 
         # Send the letter generated above that person's email address.
-        with smtplib.SMTP("smtp.gmail.com") as connection:
+        with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
             connection.starttls()
             connection.login(user=SENDER_EMAIL, password=PASSWORD)
             connection.sendmail(

@@ -8,7 +8,7 @@ from email.header import Header
 
 
 weekday_of_today = dt.datetime.now().weekday()
-if weekday_of_today == 5:
+if weekday_of_today == 0:
     # .envファイルを読み込む
     load_dotenv()
 
