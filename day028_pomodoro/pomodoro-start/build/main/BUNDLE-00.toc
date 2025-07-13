@@ -1,3 +1,0 @@
-([('main',
-   '/Users/zinkoko/projects/python100days/day028_pomodoro/pomodoro-start/dist/main',
-   'EXECUTABLE')],)
