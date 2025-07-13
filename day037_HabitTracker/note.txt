@@ -1,0 +1,5 @@
+HTTP Requests
+Get -> request.get()
+Post -> request.post()
+Put -> request.put()
+Delete -> request.delete()

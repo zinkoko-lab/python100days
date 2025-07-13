@@ -8,6 +8,8 @@ load_dotenv()
 API_KEY = os.getenv("API_KEY")
 MY_LAT = float(os.getenv("MY_LAT"))
 MY_LONG = float(os.getenv("MY_LONG"))
+TWILIO_PH_NO = os.getenv("TWILIO_PH_NO")
+MY_PN_NO = os.getenv("MY_PN_NO")
 
 account_sid = os.getenv("TWILIO_ACCOUNT_SID")
 auth_token = os.getenv("TWILIO_AUTH_TOKEN")
@@ -35,6 +37,6 @@ for id in weather_id_list:
 if will_rain:
     message = client.messages.create(
         body="It's going to rain today. Remember to bring an umbrella.☔️",
-        from_="+15855413056",
-        to="+817083257504",
+        from_=TWILIO_PH_NO,
+        to=MY_PN_NO,
     )
