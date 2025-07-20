@@ -46,6 +46,14 @@ if len(today_birthday_people) > 0:
         subject = "Happy Birthday!"
         message = text.replace("[NAME]", name)
 
+        playlist_url = "https://open.spotify.com/playlist/4grVUvLr3JMoPC1UPFq6QH"
+        playlist_message = (
+            f"\n\nPS: I made a special Spotify playlist just for you, with the Billboard Hot 100 songs from your birthday exactly 10 years ago.\n"
+            f"It's like a little time machine to take you back and let you relive that day. Hope you enjoy it!\n\n"
+            f"Here is your playlist: {playlist_url} 🎶✨"
+        )
+        message += playlist_message
+
         # make a mail object
         msg = MIMEText(message, "plain", "utf-8")
         msg["Subject"] = Header(subject, "utf-8")
