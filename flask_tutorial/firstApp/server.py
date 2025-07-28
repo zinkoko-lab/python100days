@@ -16,19 +16,28 @@ import os
 
 
 app = Flask(__name__)
-DB_INFO = {
-    "user": "postgres",
-    "password": "",
-    "host": "localhost",
-    "name": "postgres",
-}
 db = SQLAlchemy()
-SQLALCHEMY_DATABASE_URI = "postgresql+psycopg://{user}:{password}@{host}/{name}".format(
-    **DB_INFO
-)
+if app.debug:
+    # ①Flaskのセッション情報の暗号化等に使用, 本番環境ではこのコードを変える
+    SECRET_KEY = os.urandom(24)
+    DB_INFO = {
+        "user": "postgres",
+        "password": "",
+        "host": "localhost",
+        "name": "postgres",
+    }
+    SQLALCHEMY_DATABASE_URI = (
+        "postgresql+psycopg://{user}:{password}@{host}/{name}".format(**DB_INFO)
+    )
+else:
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL").replace(
+        "postgres://", "postgresql+psycopg://"
+    )
+
+app.config["SECRET_KEY"] = SECRET_KEY
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 db.init_app(app)
-
 migrate = Migrate(app, db)
 
 # -----------------------------MEMO-----------------------------
@@ -61,8 +70,6 @@ class Post(db.Model):
 
 # -----------------------------USER MANAGEMENT-----------------------------
 
-# ①Flaskのセッション情報の暗号化等に使用, 本番環境ではこのコードを変える
-app.config["SECRET_KEY"] = os.urandom(24)
 
 # ②login管理システム
 login_manager = LoginManager()
