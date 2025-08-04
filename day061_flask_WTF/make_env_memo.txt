@@ -1,0 +1,45 @@
+Python 3.9 の安定バージョンを使った conda環境 を新しく作り、その中に requirements.txt のパッケージをインストールできます。
+
+⸻
+
+✅ 手順：Python 3.9 + requirements.txt 用の新しい conda 環境を作成
+
+① Conda環境を作成（Python 3.9 指定）
+
+conda create -n flask-wtf-env python=3.9
+
+② 環境を有効化
+
+conda activate flask-wtf-env
+
+③ requirements.txt をインストール
+
+pip install -r requirements.txt
+
+※ conda ではなく pip を使うのは、Bootstrap-Flask や Flask-WTF などが PyPI パッケージだからです。
+
+⸻
+
+🔍 補足：Python 3.9 の中でも安定しているバージョン
+
+Conda で python=3.9 とだけ指定すると、自動で最新の安定版（例：3.9.19 など）が選ばれます。特定バージョンにしたい場合は：
+
+conda create -n flask-wtf-env python=3.9.13
+
+など、明示的にバージョン指定もできます。
+
+⸻
+
+✅ 確認方法
+
+python --version
+# → Python 3.9.x が出ればOK
+
+pip list
+# → Flask, Flask-WTF などが表示されればOK
+
+
+⸻
+
+準備が整ったら、flask run や python app.py でアプリを実行できます。
+必要があれば .env や FLASK_APP 設定も手伝います！
