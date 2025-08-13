@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Secrect{% endblock %}
+{% block content %}
+
+<div class="jumbotron mt-5">
+  <div class="container pt-3"
+    style="display:flex; justify-content: center; flex-direction: column; align-items:center;">
+    <h1>Welcome</h1>
+    <p>Are you ready to discover my secret?</p>
+    <a class="btn btn-primary btn-lg" href=" {{ url_for('login') }} ">Login</a>
+  </div>
+</div>
+
+{% endblock %}
