@@ -34,3 +34,8 @@ rakuten_meisai/
 memo/
 
 .idea/
+
+# SQLite database
+*.db
+*.sqlite
+*.sqlite3
