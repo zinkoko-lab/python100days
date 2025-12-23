@@ -22,6 +22,7 @@ API_TOKEN = os.getenv("TOKEN")
 # -------------------------
 SEARCH_URL = "https://api.themoviedb.org/3/search/movie"
 DETAIL_URL = "https://api.themoviedb.org/3/movie"
+IMG_URL = "https://image.tmdb.org/t/p/w500"
 HEADERS = {
     "accept": "application/json",
     "Authorization": f"Bearer {API_TOKEN}",
@@ -53,7 +54,7 @@ def movie_detail(movie_id: int) -> dict:
 
     # 必要な情報だけ抽出
     title = result["title"]
-    img_url = f"https://image.tmdb.org/t/p/w500/{result['poster_path']}"
+    img_url = f"{IMG_URL}/{result['poster_path']}"
     year = result["release_date"].split("-")[0]
     description = result["overview"]
 
@@ -136,10 +137,10 @@ def ranker():
     with app.app_context():
         result = db.session.execute(db.select(Movie).order_by(asc(Movie.rating)))
         movies = result.scalars().all()
-        ranker = len(movies)
+        ranker_ = len(movies)
         for movie in movies:
-            movie.ranking = ranker
-            ranker -= 1
+            movie.ranking = ranker_
+            ranker_ -= 1
         db.session.commit()
 
 
@@ -149,8 +150,8 @@ def ranker():
 @app.route("/")
 def home():
     """ホーム画面 - ランキング順に映画一覧表示"""
-    ranker()
     with app.app_context():
+        ranker()
         result = db.session.execute(db.select(Movie).order_by(desc(Movie.ranking)))
         movies = result.scalars().all()
     return render_template("index.html", movies=movies)

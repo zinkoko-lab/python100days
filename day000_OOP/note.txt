@@ -1,0 +1,28 @@
+﻿Giulio Cercato · Sky And Sand
+🔹 Object-Oriented Programming (OOP)
+1️⃣ Class
+A class is a blueprint or template used to create objects. It defines what data and actions an object will have.
+📌 Example: A Car class defines color, model, and speed.
+2️⃣ Object
+An object is a real-world instance of a class. It represents an actual entity created from the class.
+📌 Example: MyCar is an object of the Car class.
+3️⃣ Encapsulation
+Encapsulation means binding data and methods together and protecting data from outside access.
+📌 It improves security and data control.
+4️⃣ Abstraction
+Abstraction shows only important details and hides unnecessary information.
+📌 Example: You use a car without knowing how the engine works.
+5️⃣ Inheritance
+Inheritance allows one class to reuse the properties of another class.
+📌 It helps reduce code duplication.
+6️⃣ Polymorphism
+Polymorphism means one name, many forms. The same method behaves differently in different situations.
+📌 Example: A draw() method works differently for a circle and a square.
+
+
+
+
+
+
+
+
